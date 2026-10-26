@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* Palette from abhimanyyuagarrwal.com (titleColor, mainColor, bodyColor). */
+:root {
+  --background: #f5f5f5;
+  /* Site navy: headings and dark fills */
+  --foreground: #21225f;
+  /* Site sky blue: fills, icons, accents. Too light for small text on
+     white (2.7:1), so text uses --brand-dark instead. */
+  --brand: #08a9e6;
+  /* Deeper sky blue for text and white-text buttons (4.7:1+ on every
+     light background used here) */
+  --brand-dark: #0670a0;
+  --brand-soft: #dff2fb;
+  --hero: #eaf6fc;
+  /* Site body text */
+  --muted: #555555;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-hero: var(--hero);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-oswald);
+  --font-body: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), Arial, Helvetica, sans-serif;
+}
+
+/* Styles for the HTML body of a blog post (BlogSection.HtmlBody from the CMS) */
+@layer components {
+  .blog-content {
+    font-family: var(--font-inter), Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  /* Space blocks at any depth: the CMS nests content inside <article>,
+     <header> and <section>. */
+  .blog-content
+    :where(p, div, ul, ol, h1, h2, h3, h4, blockquote, header, section, figure, table, pre, img)
+    + * {
+    margin-top: 1.25rem;
+  }
+
+  .blog-content section {
+    margin-top: 2.5rem;
+  }
+
+  .blog-content :where(h1, h2, h3, h4, section):first-child {
+    margin-top: 0;
+  }
+
+  .blog-content h1 {
+    font-family: var(--font-oswald), sans-serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--foreground);
+  }
+
+  .blog-content h2 {
+    margin-top: 2.5rem;
+    font-family: var(--font-oswald), sans-serif;
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--foreground);
+  }
+
+  .blog-content h3 {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--foreground);
+  }
+
+  .blog-content h4 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--foreground);
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+  }
+
+  .blog-content strong {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .blog-content a {
+    color: var(--brand-dark);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    padding-left: 1.5rem;
+  }
+
+  .blog-content ul {
+    list-style: disc;
+  }
+
+  .blog-content ol {
+    list-style: decimal;
+  }
+
+  .blog-content li + li {
+    margin-top: 0.5rem;
+  }
+
+  .blog-content li::marker {
+    color: var(--brand);
+  }
+
+  .blog-content blockquote {
+    border-left: 4px solid var(--brand);
+    border-radius: 0.75rem;
+    background: var(--brand-soft);
+    padding: 1rem 1.25rem;
+    font-style: italic;
+    color: var(--foreground);
+  }
+}
