@@ -47,7 +47,7 @@ export default function BlogDetailsPage({
 
 async function BlogDetails({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = await getBlogBySlug(slug);
+  const blog = await getBlogBySlug(decodeURIComponent(slug));
   if (!blog) notFound();
 
   const sections = [...(blog.BlogSection ?? [])].sort(

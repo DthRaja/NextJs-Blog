@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     // Inline the (small, Tailwind) CSS into <head> so it doesn't block
     // rendering on a separate request. Production builds only.
     inlineCss: true,
+    serverActions: {
+      allowedOrigins: ["blog.abhimanyyuagarrwal.com", "localhost:3433"],
+    },
   },
   images: {
     // Blog cover and section images uploaded through the CMS

@@ -16,7 +16,7 @@ export default function BlogCard({
 }) {
   return (
     <Link
-      href={`/blogs/${blog.Slug}`}
+      href={`/blogs/${encodeURIComponent(blog.Slug)}`}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(16,24,40,0.06)] ring-1 ring-gray-900/5 transition hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(16,24,40,0.10)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark"
     >
       <div className="relative aspect-16/10 overflow-hidden bg-hero">
