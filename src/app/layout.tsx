@@ -28,6 +28,10 @@ export const metadata: Metadata = {
   },
   description:
     "Explore our latest articles, insights and updates from the CA domain.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

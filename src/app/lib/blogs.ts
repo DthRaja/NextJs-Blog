@@ -1,6 +1,7 @@
 import { cache } from "react";
 import ServerApi from "@/src/utils/Server";
 import convertData from "@/src/utils/convartData";
+import type { BlogListFilters } from "./filters";
 import type { BlogDetail, BlogListResponse } from "./types";
 
 // Data layer for the blog pages. Both functions return null when the API
@@ -8,9 +9,23 @@ import type { BlogDetail, BlogListResponse } from "./types";
 // ServerApi; parse failures are logged here. All of it lands in the server
 // console (these run on the server).
 
-export async function getBlogList(): Promise<BlogListResponse | null> {
+/** Posts per page. 9 fills whole rows in both the 2- and 3-column grid. */
+export const BLOGS_PER_PAGE = 9;
+
+export async function getBlogList({
+  category,
+  tag,
+  page,
+}: BlogListFilters): Promise<BlogListResponse | null> {
   const api = new ServerApi({ spName: "SPClientAnonymous", mode: 60 });
-  const res = await api.request({ PageNo: 1, CategoryId: 0 });
+  // Unset filters are dropped by JSON.stringify. PageIndex is always sent:
+  // the API answers an empty body ({}) with a 502.
+  const res = await api.request({
+    CategorySlug: category,
+    TagSlug: tag,
+    PageSize: BLOGS_PER_PAGE,
+    PageIndex: page,
+  });
   if (!res.isSuccess) return null;
   return parseResult<BlogListResponse>(res.result, "getBlogList");
 }

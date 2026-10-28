@@ -41,8 +41,10 @@ export interface BlogListItem extends BlogBase {
 
 /** Response of SPClientAnonymous/60. */
 export interface BlogListResponse {
+  /** Page count for the requested filters and PageSize. */
   NoOfPages: number;
   Categories?: Category[];
+  /** Missing when the page is past the last one. */
   BlogList?: BlogListItem[];
 }
 

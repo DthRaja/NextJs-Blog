@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getBlogBySlug } from "@/src/app/lib/blogs";
+import { blogsHref } from "@/src/app/lib/filters";
 import { mediaUrl, readingTime } from "@/src/app/lib/format";
 import { SectionType, type BlogSection } from "@/src/app/lib/types";
 
@@ -81,21 +82,24 @@ async function BlogDetails({ params }: { params: Promise<{ slug: string }> }) {
 
               {(categories.length > 0 || tags.length > 0) && (
                 <div className="mt-7 flex flex-wrap gap-2.5">
+                  {/* Each chip opens the blog list filtered by it. */}
                   {categories.map((category) => (
-                    <span
+                    <Link
                       key={`c-${category.CategoryId}`}
-                      className="rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-white"
+                      href={blogsHref({ category: category.Slug })}
+                      className="rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-dark"
                     >
                       {category.Name}
-                    </span>
+                    </Link>
                   ))}
                   {tags.map((tag) => (
-                    <span
+                    <Link
                       key={`t-${tag.TagId}`}
-                      className="rounded-full bg-white px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand/30"
+                      href={blogsHref({ tag: tag.Slug })}
+                      className="rounded-full bg-white px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand/30 transition hover:bg-brand-soft"
                     >
                       #{tag.Name}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}

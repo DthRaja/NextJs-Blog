@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BlogCardSkeleton } from "@/src/app/components/blog-card";
 import { getBlogList } from "@/src/app/lib/blogs";
+import {
+  blogsHref,
+  parseBlogFilters,
+  type BlogListFilters,
+} from "@/src/app/lib/filters";
 import BlogList from "./BlogList";
 
 export const metadata: Metadata = {
@@ -10,7 +15,9 @@ export const metadata: Metadata = {
 
 const HOME_URL = "https://abhimanyyuagarrwal.com/";
 
-export default function BlogsPage() {
+export default async function BlogsPage({ searchParams }: PageProps<"/blogs">) {
+  const filters = parseBlogFilters(await searchParams);
+
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <a
@@ -42,17 +49,19 @@ export default function BlogsPage() {
         </p>
       </header>
 
-      {/* The API call reads request headers, so it runs at request time and
-          streams in behind this fallback while the header above prerenders. */}
-      <Suspense fallback={<BlogListSkeleton />}>
-        <Blogs />
+      {/* The list streams in behind this fallback while the header above is
+          already on screen. The key changes with the filters and page, so
+          switching them shows the skeleton instead of leaving the old list
+          up with no sign that anything is loading. */}
+      <Suspense key={blogsHref(filters)} fallback={<BlogListSkeleton />}>
+        <Blogs filters={filters} />
       </Suspense>
     </main>
   );
 }
 
-async function Blogs() {
-  const data = await getBlogList();
+async function Blogs({ filters }: { filters: BlogListFilters }) {
+  const data = await getBlogList(filters);
 
   if (!data) {
     return (
@@ -63,7 +72,12 @@ async function Blogs() {
   }
 
   return (
-    <BlogList blogs={data.BlogList ?? []} categories={data.Categories ?? []} />
+    <BlogList
+      blogs={data.BlogList ?? []}
+      categories={data.Categories ?? []}
+      filters={filters}
+      pageCount={data.NoOfPages}
+    />
   );
 }
 
